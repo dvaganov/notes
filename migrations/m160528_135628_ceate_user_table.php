@@ -4,36 +4,35 @@ use yii\db\Migration;
 
 class m160528_135628_ceate_user_table extends Migration
 {
-    public function up()
+    public function safeUp()
     {
         $this->createTable('users', [
             'id' => $this->primaryKey(),
-            'name' => $this->string(255)->unique(),
-            'email' => $this->string(255),
-            'password' => $this->string(255)
+            'username' => $this->string(45)->notNull()->unique(),
+            'email' => $this->string(45)->notNull(),
+            'password' => $this->string(255)->notNull(),
+            'authKey' => $this->string(255)->unique()
         ]);
 
         $this->insert('users', [
-            'name' => 'admin',
+            'username' => 'admin',
             'email' => 'admin@mail.org',
-            'password' => password_hash('admin', PASSWORD_DEFAULT)
+            'password' => password_hash('admin', PASSWORD_DEFAULT),
+            'authKey' => \Yii::$app->security->generateRandomString()
         ]);
-    }
 
-    public function down()
-    {
-        $this->delete('users', ['id' => 1]);
-        $this->dropTable('users');
-    }
-
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
+        $this->insert('users', [
+            'username' => 'demo',
+            'email' => 'demo@mail.org',
+            'password' => password_hash('demo', PASSWORD_DEFAULT),
+            'authKey' => \Yii::$app->security->generateRandomString()
+        ]);
     }
 
     public function safeDown()
     {
+        $this->delete('users', ['id' => 2]);
+        $this->delete('users', ['id' => 1]);
+        $this->dropTable('users');
     }
-    */
 }
