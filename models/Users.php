@@ -13,7 +13,7 @@ use Yii;
  * @property string $password
  * @property string $authKey
  */
-class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * @inheritdoc
