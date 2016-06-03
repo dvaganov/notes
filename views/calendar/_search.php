@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'text') ?>
 
-    <?= $form->field($model, 'creator') ?>
+    <?= $form->field($model, 'creatorID') ?>
 
     <?= $form->field($model, 'dateEvent') ?>
 

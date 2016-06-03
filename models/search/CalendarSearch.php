@@ -2,7 +2,6 @@
 
 namespace app\models\search;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Calendar;
@@ -18,7 +17,7 @@ class CalendarSearch extends Calendar
     public function rules()
     {
         return [
-            [['id', 'creator'], 'integer'],
+            [['id', 'creatorID'], 'integer'],
             [['text', 'dateEvent'], 'safe'],
         ];
     }
@@ -60,7 +59,7 @@ class CalendarSearch extends Calendar
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'creator' => $this->creator,
+            'creatorID' => $this->creatorID,
             'dateEvent' => $this->dateEvent,
         ]);
 

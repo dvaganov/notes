@@ -36,17 +36,27 @@ class CalendarController extends Controller
     public function actionIndex()
     {
         $searchModel = new CalendarSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProviderMy = $searchModel->search([
+            'CalendarSearch' => [
+                'creatorID' => \Yii::$app->user->id
+            ]
+        ]);
+        $dataProviderShared = $searchModel->search([
+            'CalendarSearch' => [
+                'creatorID' => 2
+            ]
+        ]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProviderMy' => $dataProviderMy,
+            'dataProviderShared' => $dataProviderShared,
         ]);
     }
 
     /**
      * Displays a single Calendar model.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      */
     public function actionView($id)
@@ -77,7 +87,7 @@ class CalendarController extends Controller
     /**
      * Updates an existing Calendar model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -96,7 +106,7 @@ class CalendarController extends Controller
     /**
      * Deletes an existing Calendar model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param int $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -109,7 +119,7 @@ class CalendarController extends Controller
     /**
      * Finds the Calendar model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     * @param int $id
      * @return Calendar the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

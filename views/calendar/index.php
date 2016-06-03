@@ -8,21 +8,35 @@ use yii\widgets\ListView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Calendars');
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="calendar-index">
+    <div>
+        <h1><?= Html::encode($this->title) ?>: my events</h1>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+        <p>
+            <?= Html::a(Yii::t('app', 'Add event'), ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+        <?= ListView::widget([
+            'dataProvider' => $dataProviderMy,
+            'itemOptions' => ['class' => 'item'],
+            'itemView' => function ($model, $key, $index, $widget) {
+                return Html::a(Html::encode($model->id), ['view', 'id' => $model->id]);
+            },
+        ]) ?>
+    </div>
+    <div>
+        <h1><?= Html::encode($this->title) ?>: shared events</h1>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Calendar'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?= ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemOptions' => ['class' => 'item'],
-        'itemView' => function ($model, $key, $index, $widget) {
-            return Html::a(Html::encode($model->id), ['view', 'id' => $model->id]);
-        },
-    ]) ?>
+        <p>
+            <?= Html::a(Yii::t('app', 'Add event'), ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+        <?= ListView::widget([
+            'dataProvider' => $dataProviderShared,
+            'itemOptions' => ['class' => 'item'],
+            'itemView' => function ($model, $key, $index, $widget) {
+                return Html::a(Html::encode($model->id), ['view', 'id' => $model->id]);
+            },
+        ]) ?>
+    </div>
 </div>

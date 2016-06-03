@@ -9,10 +9,10 @@ use Yii;
  *
  * @property integer $id
  * @property string $text
- * @property integer $creator
+ * @property integer $creatorID
  * @property string $dateEvent
  *
- * @property Users $creator0
+ * @property Users $creator
  */
 class Calendar extends \yii\db\ActiveRecord
 {
@@ -30,11 +30,9 @@ class Calendar extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['text', 'creator'], 'required'],
+            [['text'], 'required'],
             [['text'], 'string'],
-            [['creator'], 'integer'],
-            [['dateEvent'], 'safe'],
-            [['creator'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['creator' => 'id']],
+            [['dateEvent'], 'date', 'format' => 'php:Y-m-d'],
         ];
     }
 
@@ -46,7 +44,7 @@ class Calendar extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'text' => Yii::t('app', 'Text'),
-            'creator' => Yii::t('app', 'Creator'),
+            'creatorID' => Yii::t('app', 'Creator ID'),
             'dateEvent' => Yii::t('app', 'Date Event'),
         ];
     }
@@ -54,9 +52,9 @@ class Calendar extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCreator0()
+    public function getCreator()
     {
-        return $this->hasOne(Users::className(), ['id' => 'creator']);
+        return $this->hasOne(Users::className(), ['id' => 'creatorID']);
     }
 
     /**
@@ -66,5 +64,21 @@ class Calendar extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \app\models\query\CalendarQuery(get_called_class());
+    }
+
+    /**
+     * Do operations with model before save it to DB.
+     * @param array $insert
+     */
+    public function beforeSave($insert)
+    {
+        $result = false;
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->creatorID = \Yii::$app->user->id;
+            }
+            $result = true;
+        }
+        return $result;
     }
 }
