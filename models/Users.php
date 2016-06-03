@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "users".
  *
@@ -52,7 +50,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     /**
      * @param string $username
-     * @return User current model
+     * @return Users current model
      */
     public static function findByUserName($username)
     {
@@ -61,7 +59,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     /**
      * @param string $password
-     * @return boolean result of validation
+     * @return bool result of validation
      */
      public function validatePassword($password)
      {
@@ -71,8 +69,8 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     /**
      * Finds an identity by the given ID.
      *
-     * @param string|integer $id the ID to be looked for
-     * @return IdentityInterface|null the identity object that matches the given ID.
+     * @param string|int $id the ID to be looked for
+     * @return \yii\web\IdentityInterface|null the identity object that matches the given ID.
      */
     public static function findIdentity($id)
     {
@@ -83,7 +81,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * Finds an identity by the given token.
      *
      * @param string $token the token to be looked for
-     * @return IdentityInterface|null the identity object that matches the given token.
+     * @return \yii\web\IdentityInterface|null the identity object that matches the given token.
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
@@ -108,7 +106,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     /**
      * @param string $authKey
-     * @return boolean if auth key is valid for current user
+     * @return bool if auth key is valid for current user
      */
     public function validateAuthKey($authKey)
     {
@@ -116,17 +114,19 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     *
+     * Do operations with model before save it to DB.
+     * @param array $insert
      */
     public function beforeSave($insert)
     {
+        $result = false;
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
                 $this->authKey = \Yii::$app->security->generateRandomString();
                 $this->password = password_hash($this->password, PASSWORD_DEFAULT);
             }
-            return true;
+            $resul = true;
         }
-        return false;
+        return $result;
     }
 }
