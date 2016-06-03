@@ -17,9 +17,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'userOwner') ?>
+    <?= $form->field($model, 'ownerID') ?>
 
-    <?= $form->field($model, 'userGuest') ?>
+    <?= $form->field($model, 'guestID') ?>
 
     <?= $form->field($model, 'date') ?>
 

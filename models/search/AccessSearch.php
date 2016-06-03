@@ -18,7 +18,7 @@ class AccessSearch extends Access
     public function rules()
     {
         return [
-            [['id', 'userOwner', 'userGuest'], 'integer'],
+            [['id', 'ownerID', 'guestID'], 'integer'],
             [['date'], 'safe'],
         ];
     }
@@ -60,8 +60,8 @@ class AccessSearch extends Access
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'userOwner' => $this->userOwner,
-            'userGuest' => $this->userGuest,
+            'ownerID' => $this->ownerID,
+            'guestID' => $this->guestID,
             'date' => $this->date,
         ]);
 

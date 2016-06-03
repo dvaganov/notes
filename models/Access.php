@@ -8,15 +8,20 @@ use Yii;
  * This is the model class for table "access".
  *
  * @property integer $id
- * @property integer $userOwner
- * @property integer $userGuest
+ * @property integer $ownerID
+ * @property integer $guestID
  * @property string $date
  *
- * @property Users $userGuest0
- * @property Users $userOwner0
+ * @property Users $guest
+ * @property Users $owner
  */
 class Access extends \yii\db\ActiveRecord
 {
+  /**
+   * Date format for validation.
+   * @var string DATE_FORMAT
+   */
+  const DATE_FORMAT = 'Y-m-d';
     /**
      * @inheritdoc
      */
@@ -31,11 +36,11 @@ class Access extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userOwner', 'userGuest', 'date'], 'required'],
-            [['userOwner', 'userGuest'], 'integer'],
-            [['date'], 'safe'],
-            [['userGuest'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['userGuest' => 'id']],
-            [['userOwner'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['userOwner' => 'id']],
+            [['ownerID', 'guestID', 'date'], 'required'],
+            [['ownerID', 'guestID'], 'integer'],
+            [['date'], 'date', 'format' => 'php:' . static::DATE_FORMAT],
+            [['guestID'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['guestID' => 'id']],
+            [['ownerID'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['ownerID' => 'id']],
         ];
     }
 
@@ -46,8 +51,8 @@ class Access extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'userOwner' => Yii::t('app', 'User Owner'),
-            'userGuest' => Yii::t('app', 'User Guest'),
+            'ownerID' => Yii::t('app', 'Owner ID'),
+            'guestID' => Yii::t('app', 'Guest ID'),
             'date' => Yii::t('app', 'Date'),
         ];
     }
@@ -55,17 +60,17 @@ class Access extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserGuest0()
+    public function getGuest()
     {
-        return $this->hasOne(Users::className(), ['id' => 'userGuest']);
+        return $this->hasOne(Users::className(), ['id' => 'guestID']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserOwner0()
+    public function getOwner()
     {
-        return $this->hasOne(Users::className(), ['id' => 'userOwner']);
+        return $this->hasOne(Users::className(), ['id' => 'ownerID']);
     }
 
     /**

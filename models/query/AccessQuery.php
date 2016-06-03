@@ -31,4 +31,13 @@ class AccessQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    /**
+     * Add guest filter to access.
+     * @param int $userID guest id
+     */
+    public function asGuest($userID)
+    {
+        return $this->andWhere('guestID = :guestID', ['guestID' => $userID]);
+    }
 }
