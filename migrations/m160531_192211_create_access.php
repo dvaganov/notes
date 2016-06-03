@@ -14,36 +14,36 @@ class m160531_192211_create_access extends Migration
     {
         $this->createTable('access', [
             'id' => $this->primaryKey(),
-            'userOwner' => $this->integer()->notNull(),
-            'userGuest' => $this->integer()->notNull(),
+            'ownerID' => $this->integer()->notNull(),
+            'guestID' => $this->integer()->notNull(),
             'date' => $this->date()->notNull()
         ]);
 
         $this->createIndex(
-            'idx-acess-userOwner',
+            'idx-acess-ownerID',
             'access',
-            'userOwner'
+            'ownerID'
         );
 
         $this->createIndex(
-            'idx-acess-userGuest',
+            'idx-acess-guestID',
             'access',
-            'userGuest'
+            'guestID'
         );
 
         $this->addForeignKey(
-            'fk-access-userOwner',
+            'fk-access-ownerID',
             'access',
-            'userOwner',
+            'ownerID',
             'users',
             'id',
             'NO ACTION'
         );
 
         $this->addForeignKey(
-            'fk-access-userGuest',
+            'fk-access-guestID',
             'access',
-            'userGuest',
+            'guestID',
             'users',
             'id',
             'NO ACTION'
@@ -55,10 +55,10 @@ class m160531_192211_create_access extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey('fk-access-userGuest', 'access');
-        $this->dropForeignKey('fk-access-userOwner', 'access');
-        $this->dropIndex('idx-acess-userGuest', 'access');
-        $this->dropIndex('idx-acess-userOwner', 'access');
+        $this->dropForeignKey('fk-access-guestID', 'access');
+        $this->dropForeignKey('fk-access-ownerID', 'access');
+        $this->dropIndex('idx-acess-guestID', 'access');
+        $this->dropIndex('idx-acess-ownerID', 'access');
         $this->dropTable('access');
     }
 }

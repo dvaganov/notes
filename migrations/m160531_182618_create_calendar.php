@@ -15,20 +15,20 @@ class m160531_182618_create_calendar extends Migration
         $this->createTable('calendar', [
             'id' => $this->primaryKey(),
             'text' => $this->text()->notNull(),
-            'creator' => $this->integer()->notNull(),
+            'creatorID' => $this->integer()->notNull(),
             'dateEvent' => $this->dateTime()->notNull() . ' DEFAULT CURRENT_TIMESTAMP'
         ]);
 
         $this->createIndex(
-            'idx-calendar-creator',
+            'idx-calendar-creatorID',
             'calendar',
-            'creator'
+            'creatorID'
         );
 
         $this->addForeignKey(
-            'fk-calendar-creator',
+            'fk-calendar-creatorID',
             'calendar',
-            'creator',
+            'creatorID',
             'users',
             'id',
             'NO ACTION'
@@ -40,8 +40,8 @@ class m160531_182618_create_calendar extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey('fk-calendar-creator', 'calendar');
-        $this->dropIndex('idx-calendar-creator', 'calendar');
+        $this->dropForeignKey('fk-calendar-creatorID', 'calendar');
+        $this->dropIndex('idx-calendar-creatorID', 'calendar');
         $this->dropTable('calendar');
     }
 }
