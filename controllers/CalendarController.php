@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Calendar;
+use app\models\Access;
 use app\models\search\CalendarSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -36,16 +37,12 @@ class CalendarController extends Controller
     public function actionIndex()
     {
         $searchModel = new CalendarSearch();
-        $dataProviderMy = $searchModel->search([
-            'CalendarSearch' => [
-                'creatorID' => \Yii::$app->user->id
-            ]
-        ]);
-        $dataProviderShared = $searchModel->search([
-            'CalendarSearch' => [
-                'creatorID' => 2
-            ]
-        ]);
+
+        $dataProviderMy = $searchModel->byOwner(\Yii::$app->user->id);
+
+        $access = Access::find()->whereGuest(\Yii::$app->user->id)->all();
+
+        $dataProviderShared = $searchModel->searchShared($access);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

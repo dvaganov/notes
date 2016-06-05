@@ -67,4 +67,22 @@ class CalendarSearch extends Calendar
 
         return $dataProvider;
     }
+
+    public function byOwner($ownerID)
+    {
+        $query = Calendar::find()->whereOwner($ownerID);
+        return new ActiveDataProvider(['query' => $query]);
+    }
+
+    /**
+     * @param \app\models\Access $accesses
+     */
+    public function searchShared($accesses)
+    {
+        $query = Calendar::find();
+        foreach($accesses as $access) {
+            $query->withUserAndDate($access->ownerID, $access->date);
+        }
+        return new ActiveDataProvider(['query' => $query]);
+    }
 }
