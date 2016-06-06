@@ -68,6 +68,11 @@ class CalendarSearch extends Calendar
         return $dataProvider;
     }
 
+    /**
+     * Creates data provider instance with own events
+     * @param int $ownerID
+     * @return ActiveDataProvider
+     */
     public function byOwner($ownerID)
     {
         $query = Calendar::find()->whereOwner($ownerID);
@@ -75,14 +80,22 @@ class CalendarSearch extends Calendar
     }
 
     /**
+     * Creates data provider instance with shared events
      * @param \app\models\Access $accesses
+     * @return ActiveDataProvider
      */
     public function searchShared($accesses)
     {
         $query = Calendar::find();
+
         foreach($accesses as $access) {
             $query->withUserAndDate($access->ownerID, $access->date);
         }
+
+        if (is_null($query->sql)) {
+            $query->where('0 = 1');
+        }
+
         return new ActiveDataProvider(['query' => $query]);
     }
 }

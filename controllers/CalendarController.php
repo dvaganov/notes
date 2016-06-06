@@ -37,11 +37,9 @@ class CalendarController extends Controller
     public function actionIndex()
     {
         $searchModel = new CalendarSearch();
-
-        $dataProviderMy = $searchModel->byOwner(\Yii::$app->user->id);
-
         $access = Access::find()->whereGuest(\Yii::$app->user->id)->all();
 
+        $dataProviderMy = $searchModel->byOwner(\Yii::$app->user->id);
         $dataProviderShared = $searchModel->searchShared($access);
 
         return $this->render('index', [

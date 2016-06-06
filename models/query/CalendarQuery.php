@@ -52,7 +52,6 @@ class CalendarQuery extends \yii\db\ActiveQuery
 
     public function withUserAndDate($userID, $date)
     {
-        echo $userID . $date;
         return $this->orWhere([
                 'and', 'creatorID = :userID',
                 ['like', 'dateEvent', $date]
