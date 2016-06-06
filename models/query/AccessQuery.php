@@ -40,4 +40,13 @@ class AccessQuery extends \yii\db\ActiveQuery
     {
         return $this->andWhere('guestID = :guestID', ['guestID' => $userID]);
     }
+
+    /**
+     * Add date filter to access.
+     * @param int $date
+     */
+    public function whereDate($date)
+    {
+        return $this->andWhere(['like', 'date', $date]);
+    }
 }

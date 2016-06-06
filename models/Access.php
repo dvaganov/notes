@@ -22,6 +22,10 @@ class Access extends \yii\db\ActiveRecord
    * @var string DATE_FORMAT
    */
   const DATE_FORMAT = 'Y-m-d';
+  const ACCESS_NO = 0;
+  const ACCESS_OWNER = 1;
+  const ACCESS_GUEST = 2;
+
     /**
      * @inheritdoc
      */
@@ -80,5 +84,28 @@ class Access extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \app\models\query\AccessQuery(get_called_class());
+    }
+
+    /**
+     * Check access currento user to model.
+     * @param \app\models\Calendar $model
+     * @return int Access status
+     */
+    public function check($model)
+    {
+        $result = self::ACCESS_NO;
+        $currentUser = \Yii::$app->user->id;
+
+        if ($currentUser == $model->creatorID) {
+            $result = self::ACCESS_OWNER;
+        } else {
+            $isGuest = self::find()
+                ->whereGuest($currentUser)
+                ->whereDate($model->dateEvent)
+                ->exists();
+            $result = ($isGuest) ? self::ACCESS_GUEST : $result;
+        }
+
+        return $result;
     }
 }

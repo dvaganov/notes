@@ -56,8 +56,26 @@ class CalendarController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+        $model = $this->findModel($id);
+        $view = '';
+
+        switch(Access::check($model)) {
+
+            case Access::ACCESS_OWNER:
+                $view = 'view';
+                break;
+
+            case Access::ACCESS_GUEST:
+                $view = 'viewGuest';
+                break;
+
+            case Access::ACCESS_NO:
+            default:
+                throw new \yii\web\ForbiddenHttpException("Not allowed!");
+        }
+
+        return $this->render($view, [
+            'model' => $model,
         ]);
     }
 
