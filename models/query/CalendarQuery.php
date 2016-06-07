@@ -33,15 +33,6 @@ class CalendarQuery extends \yii\db\ActiveQuery
     }
 
     /**
-     * Add guest filter to access.
-     * @param string $date date in format Y-m-d
-     */
-    public function whereDate($date)
-    {
-        return $this->andWhere(['like', 'date', $date]);
-    }
-
-    /**
      * Add creator filter to calendar.
      * @param int $userID creator id
      */
@@ -52,11 +43,16 @@ class CalendarQuery extends \yii\db\ActiveQuery
 
     public function withUserAndDate($userID, $date)
     {
-        return $this->orWhere([
-                'and', 'creatorID = :userID',
-                ['like', 'dateEvent', $date]
+        $this->orWhere([
+                'and',
+                'creatorID = :userID',
+                'CAST(dateEvent AS DATE) = :date'
             ],
-            ['userID' => $userID]
+            [
+                'userID' => $userID,
+                'date' => $date
+            ]
         );
+        return $this;
     }
 }

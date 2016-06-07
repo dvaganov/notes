@@ -43,10 +43,10 @@ class AccessQuery extends \yii\db\ActiveQuery
 
     /**
      * Add date filter to access.
-     * @param int $date
+     * @param string $date
      */
     public function whereDate($date)
     {
-        return $this->andWhere(['like', 'date', $date]);
+        return $this->andWhere('date = :date', ['date' => $date]);
     }
 }
