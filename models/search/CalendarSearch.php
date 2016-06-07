@@ -92,7 +92,7 @@ class CalendarSearch extends Calendar
             $query->withUserAndDate($access->ownerID, $access->date);
         }
 
-        if (is_null($query->sql)) {
+        if (empty($accesses)) {
             $query->where('0 = 1');
         }
 
