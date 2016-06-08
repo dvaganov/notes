@@ -50,6 +50,36 @@ class CalendarController extends Controller
     }
 
     /**
+     * @return mixed
+     */
+     public function actionMy()
+     {
+         $searchModel = new CalendarSearch();
+         $dataProvider = $searchModel->byOwner(\Yii::$app->user->id);
+
+         return $this->render('my', [
+             'searchModel' => $searchModel,
+             'dataProvider' => $dataProvider,
+         ]);
+     }
+
+     /**
+      * @return mixed
+      */
+      public function actionShared()
+      {
+          $searchModel = new CalendarSearch();
+          $access = Access::find()->whereGuest(\Yii::$app->user->id)->all();
+
+          $dataProvider = $searchModel->searchShared($access);
+
+          return $this->render('shared', [
+              'searchModel' => $searchModel,
+              'dataProvider' => $dataProvider,
+          ]);
+      }
+
+    /**
      * Displays a single Calendar model.
      * @param int $id
      * @return mixed
@@ -62,7 +92,7 @@ class CalendarController extends Controller
         switch(Access::check($model)) {
 
             case Access::ACCESS_OWNER:
-                $view = 'view';
+                $view = 'viewCreator';
                 break;
 
             case Access::ACCESS_GUEST:

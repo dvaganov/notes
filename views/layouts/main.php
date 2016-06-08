@@ -39,7 +39,8 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Calendar', 'url' => ['/calendar/index']],
+            ['label' => 'My Calendar', 'url' => ['/calendar/my']],
+            ['label' => 'Shared Calendar', 'url' => ['/calendar/shared']],
             ['label' => 'Access ', 'url' => ['/access/index']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]

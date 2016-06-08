@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Calendar */
 
-$this->title = substr($model->text, 0, 10) . '...';
+$this->title = $model->dateEvent;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Calendars'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -28,10 +28,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'text:ntext',
-            'creatorID',
+            [
+                'attribute' => 'creatorName',
+                'format' => 'raw',
+                'value' => Html::a(
+                    $model->creator->username,
+                    ['/calendar/my']
+                )
+            ],
             'dateEvent',
+            'text:ntext',
         ],
     ]) ?>
 

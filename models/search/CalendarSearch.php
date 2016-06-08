@@ -75,7 +75,7 @@ class CalendarSearch extends Calendar
      */
     public function byOwner($ownerID)
     {
-        $query = Calendar::find()->whereOwner($ownerID);
+        $query = Calendar::find()->whereOwner($ownerID)->with('creator');
         return new ActiveDataProvider(['query' => $query]);
     }
 
