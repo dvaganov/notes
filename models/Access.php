@@ -108,4 +108,15 @@ class Access extends \yii\db\ActiveRecord
 
         return $result;
     }
+
+    /**
+     * Check if user is creator the model.
+     * @param \app\models\Calendar $model
+     * @return bool
+     */
+    public static function isCreator($model)
+    {
+        $currentUserID = \Yii::$app->user->id;
+        return $currentUserID === $model->creatorID;
+    }
 }

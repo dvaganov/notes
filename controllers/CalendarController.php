@@ -137,6 +137,11 @@ class CalendarController extends Controller
     {
         $model = $this->findModel($id);
 
+        if (!Access::isCreator($model)) {
+            throw new \yii\web\ForbiddenHttpException("Not allowed!");
+            return;
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -154,7 +159,13 @@ class CalendarController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($id);
+
+        if (Access::isCreator($model)) {
+            $model->delete();
+        } else {
+            throw new \yii\web\ForbiddenHttpException("Not allowed!");
+        }
 
         return $this->redirect(['index']);
     }
