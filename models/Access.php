@@ -91,7 +91,7 @@ class Access extends \yii\db\ActiveRecord
      * @param \app\models\Calendar $model
      * @return int Access status
      */
-    public function check($model)
+    public static function check($model)
     {
         $result = self::ACCESS_NO;
         $currentUser = \Yii::$app->user->id;
