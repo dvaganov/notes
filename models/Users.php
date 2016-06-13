@@ -129,4 +129,13 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         }
         return $result;
     }
+
+    /**
+     * @inheritdoc
+     * @return \app\models\query\UsersQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \app\models\query\UsersQuery(get_called_class());
+    }
 }
