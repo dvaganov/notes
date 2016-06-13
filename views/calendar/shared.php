@@ -8,7 +8,7 @@ use yii\widgets\ListView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Calendars');
-//$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="calendar-index">
     <h1><?= Html::encode($this->title) ?>: shared events</h1>
