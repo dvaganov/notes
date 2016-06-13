@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Access */
@@ -12,9 +13,20 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'ownerID')->textInput() ?>
+    <label for="autocomplete_guest_id">Choose user</label>
+    <?= \yii\jui\AutoComplete::widget([
+        'id' => 'autocomplete_guest_id',
+        'clientOptions' => [
+            'name' => 'guestID',
+            'source' => $autocompleteUsers,
+            'select' => new JsExpression("function(event, ui) {
+                $('#access-guestid').val(ui.item.id);
+            }")
+        ]
+    ]);
+    ?>
 
-    <?= $form->field($model, 'guestID')->textInput() ?>
+    <?= Html::activeHiddenInput($model, 'guestID')?>
 
     <?= $form->field($model, 'date')->widget(\yii\jui\DatePicker::classname(), [
     //'language' => 'ru',

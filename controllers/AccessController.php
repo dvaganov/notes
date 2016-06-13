@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Users;
 use app\models\Access;
 use app\models\search\AccessSearch;
 use yii\web\Controller;
@@ -75,12 +76,19 @@ class AccessController extends Controller
     public function actionCreate()
     {
         $model = new Access();
+        $model->ownerID = \Yii::$app->user->id;
+        $autocompleteUsers = Users::find()
+            ->selectForAutocomplete()
+            ->excludeUser(Yii::$app->user->id)
+            ->asArray()
+            ->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'autocompleteUsers' => $autocompleteUsers
             ]);
         }
     }
