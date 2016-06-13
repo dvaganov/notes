@@ -95,6 +95,11 @@ class AccessController extends Controller
     {
         $model = $this->findModel($id);
 
+        if ($model->ownerID !== \Yii::$app->user->id) {
+            throw new \yii\web\ForbiddenHttpException("Not allowed!");
+            return;
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -112,7 +117,13 @@ class AccessController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        if ($model->ownerID === \Yii::$app->user->id) {
+            $model->delete();
+        } else {
+            throw new \yii\web\ForbiddenHttpException("Not allowed!");
+        }
 
         return $this->redirect(['index']);
     }
