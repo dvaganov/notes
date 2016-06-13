@@ -16,27 +16,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <p>
             <?= Html::a(Yii::t('app', 'Add event'), ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a(Yii::t('app', 'Share the day'), ['/access/create'], ['class' => 'btn btn-primary']) ?>
         </p>
-        <?= ListView::widget([
-            'dataProvider' => $dataProviderMy,
-            'itemOptions' => ['class' => 'item'],
-            'itemView' => function ($model, $key, $index, $widget) {
-                return Html::a(Html::encode($model->id), ['view', 'id' => $model->id]);
-            },
+
+        <?= $this->render('_listViewWidget', [
+            'dataProvider' => $dataProviderMy
         ]) ?>
+
     </div>
+
     <div>
         <h1><?= Html::encode($this->title) ?>: shared events</h1>
 
-        <p>
-            <?= Html::a(Yii::t('app', 'Add event'), ['create'], ['class' => 'btn btn-success']) ?>
-        </p>
-        <?= ListView::widget([
-            'dataProvider' => $dataProviderShared,
-            'itemOptions' => ['class' => 'item'],
-            'itemView' => function ($model, $key, $index, $widget) {
-                return Html::a(Html::encode($model->id), ['view', 'id' => $model->id]);
-            },
+        <?= $this->render('_listViewWidget', [
+            'dataProvider' => $dataProviderShared
         ]) ?>
+
     </div>
 </div>
