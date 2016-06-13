@@ -42,6 +42,15 @@ class AccessQuery extends \yii\db\ActiveQuery
     }
 
     /**
+     * Add user filter to access.
+     * @param int $userID guest id
+     */
+    public function whereUser($userID)
+    {
+        return $this->andWhere('userID = :userID', ['userID' => $userID]);
+    }
+
+    /**
      * Add date filter to access.
      * @param string $date
      */

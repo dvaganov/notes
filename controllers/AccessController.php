@@ -47,7 +47,7 @@ class AccessController extends Controller
     public function actionIndex()
     {
         $searchModel = new AccessSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchForUser(Yii::$app->user->id, Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
