@@ -38,7 +38,7 @@ class AccessQuery extends \yii\db\ActiveQuery
      */
     public function whereGuest($userID)
     {
-        return $this->andWhere('guestID = :guestID', ['guestID' => $userID]);
+        return $this->andWhere('guestID = :userID', ['userID' => $userID]);
     }
 
     /**
@@ -47,7 +47,7 @@ class AccessQuery extends \yii\db\ActiveQuery
      */
     public function whereUser($userID)
     {
-        return $this->andWhere('userID = :userID', ['userID' => $userID]);
+        return $this->andWhere('ownerID = :userID', ['userID' => $userID]);
     }
 
     /**
