@@ -159,7 +159,7 @@ class CalendarController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id);
+        $model = $this->findModel($id);
 
         if (Access::isCreator($model)) {
             $model->delete();
